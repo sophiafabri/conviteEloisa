@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aniversário de Eloisa Fabri - 05/12/2026</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Tangled Fairytale Inspired -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Great+Vibes&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- JS Confetti -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        tangled: {
+                            deep: '#180B2B',
+                            purple: '#2A0E43',
+                            violet: '#4A154B',
+                            magenta: '#7B2068',
+                            gold: '#F3C06B',
+                            goldLight: '#FFE8A3',
+                            glow: '#FFDF80'
+                        }
+                    },
+                    fontFamily: {
+                        fairytale: ['"Cinzel Decorative"', 'serif'],
+                        script: ['"Great Vibes"', 'cursive'],
+                        sans: ['Montserrat', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Magical Floating Lanterns Canvas/Background Effect */
+        body {
+            background-color: #120620;
+            color: #F8F5FF;
+            background-image: 
+                linear-gradient(to bottom, rgba(18, 6, 32, 0.65), rgba(30, 10, 50, 0.85)),
+                url('https://images.unsplash.com/photo-1518709268805-4e9042af9f23?q=80&w=1600&auto=format&fit=crop');
+            background-attachment: fixed;
+            background-size: cover;
+            background-position: center;
+        }
+
+        /* Frosted Glassmorphism Cards */
+        .glass-card {
+            background: rgba(35, 15, 60, 0.65);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(243, 192, 107, 0.25);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+        }
+
+        .glass-card-interactive {
+            transition: all 0.3s ease;
+        }
+        .glass-card-interactive:hover {
+            transform: translateY(-4px);
+            border-color: rgba(243, 192, 107, 0.6);
+            box-shadow: 0 15px 35px rgba(243, 192, 107, 0.2);
+        }
+
+        /* Animated Glowing Floating Lantern Elements */
+        .lantern {
+            position: absolute;
+            width: 14px;
+            height: 20px;
+            background: linear-gradient(135deg, #FFE8A3, #F3C06B);
+            border-radius: 4px 4px 6px 6px;
+            box-shadow: 0 0 15px #FFDF80, 0 0 30px rgba(243, 192, 107, 0.8);
+            animation: floatUp 14s infinite linear;
+            opacity: 0.8;
+            pointer-events: none;
+        }
+
+        @keyframes floatUp {
+            0% {
+                transform: translateY(100vh) scale(0.6) rotate(0deg);
+                opacity: 0.2;
+            }
+            50% {
+                opacity: 0.9;
+                box-shadow: 0 0 20px #FFDF80, 0 0 40px rgba(243, 192, 107, 1);
+            }
+            100% {
+                transform: translateY(-20vh) scale(1.1) rotate(15deg);
+                opacity: 0;
+            }
+        }
+
+        /* Gold Gradient Text */
+        .gold-gradient-text {
+            background: linear-gradient(135deg, #FFF0B8 0%, #F3C06B 50%, #D89832 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #120620;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #4A154B;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #F3C06B;
+        }
+    </style>
+</head>
+<body class="font-sans antialiased selection:bg-tangled-gold selection:text-tangled-deep relative overflow-x-hidden">
+
+    <!-- Floating Lanterns Animation Background -->
+    <div id="lanterns-container" class="fixed inset-0 pointer-events-none z-0 overflow-hidden"></div>
+
+    <!-- Audio Player Toggle -->
+    <div class="fixed bottom-6 right-6 z-50 flex items-center gap-3">
+        <div id="musicLabel" class="hidden sm:flex items-center gap-2 bg-tangled-deep/90 text-tangled-goldLight text-xs px-4 py-2 rounded-full border border-tangled-gold/40 shadow-xl backdrop-blur-md">
+            <i class="fas fa-music text-tangled-gold animate-bounce"></i>
+            <span>"Vejo Enfim a Luz Brilhar"</span>
+        </div>
+        <button id="musicToggle" onclick="toggleAudio()" class="w-13 h-13 p-3.5 rounded-full bg-tangled-violet text-tangled-goldLight shadow-2xl flex items-center justify-center hover:scale-110 transition-all duration-300 border border-tangled-gold/50 hover:shadow-[0_0_20px_rgba(243,192,107,0.6)]" title="Tocar / Pausar Música">
+            <i id="musicIcon" class="fas fa-play text-xl ml-0.5"></i>
+        </button>
+    </div>
+
+    <!-- Navigation Header -->
+    <nav class="fixed top-0 left-0 w-full z-40 bg-tangled-deep/80 backdrop-blur-md border-b border-tangled-gold/20 px-4 py-3 transition-all duration-300">
+        <div class="max-w-6xl mx-auto flex justify-between items-center">
+            <a href="#home" class="font-script text-3xl font-bold gold-gradient-text">Eloisa Fabri</a>
+            <div class="hidden md:flex space-x-6 text-sm font-medium text-tangled-goldLight/90">
+                <a href="#detalhes" class="hover:text-tangled-gold transition">Detalhes</a>
+                <a href="#local" class="hover:text-tangled-gold transition">Local</a>
+                <a href="#rsvp" class="bg-gradient-to-r from-tangled-gold to-tangled-goldLight text-tangled-deep px-5 py-1.5 rounded-full font-semibold hover:brightness-110 transition shadow-lg">Confirmar</a>
+            </div>
+            <a href="#rsvp" class="md:hidden bg-gradient-to-r from-tangled-gold to-tangled-goldLight text-tangled-deep text-xs px-4 py-2 rounded-full font-bold">
+                Confirmar Presença
+            </a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="min-h-screen relative flex items-center justify-center pt-24 pb-16 px-4 z-10">
+        <div class="max-w-3xl w-full text-center space-y-8">
+            
+            <div class="inline-block animate-pulse">
+                <span class="uppercase tracking-[0.3em] text-xs md:text-sm text-tangled-goldLight font-medium px-6 py-2 rounded-full glass-card border border-tangled-gold/40 shadow-[0_0_15px_rgba(243,192,107,0.2)]">
+                    ✨ Você está convidado para um dia mágico ✨
+                </span>
+            </div>
+            
+            <div class="space-y-3">
+                <p class="font-script text-3xl md:text-5xl text-tangled-goldLight/90 drop-shadow">Celebração de Aniversário de</p>
+                <h1 class="font-script text-6xl md:text-8xl lg:text-9xl gold-gradient-text drop-shadow-[0_4px_15px_rgba(0,0,0,0.8)] py-2 leading-tight tracking-wide font-normal">
+                    Eloisa Fabri
+                </h1>
+            </div>
+
+            <!-- Lyric Quote Highlight Card -->
+            <div class="glass-card p-6 rounded-2xl border border-tangled-gold/30 max-w-lg mx-auto my-4 shadow-lg">
+                <i class="fas fa-quote-left text-tangled-gold/40 text-2xl block mb-2"></i>
+                <p class="text-tangled-goldLight font-script text-2xl md:text-3xl leading-relaxed">
+                    "Tantos dias sonhando acordada...<br>
+                    Vejo enfim a luz brilhar!"
+                </p>
+                <span class="text-xs text-tangled-gold tracking-widest font-sans uppercase mt-2 block">✨ Tangled / Enrolados ✨</span>
+            </div>
+
+            <!-- Date Banner -->
+            <div class="flex items-center justify-center space-x-4 text-tangled-goldLight">
+                <div class="h-[1px] w-12 md:w-24 bg-gradient-to-r from-transparent to-tangled-gold"></div>
+                <p class="font-sans text-xl md:text-2xl tracking-[0.25em] font-light uppercase text-tangled-goldLight">
+                    05 . 12 . 2026
+                </p>
+                <div class="h-[1px] w-12 md:w-24 bg-gradient-to-l from-transparent to-tangled-gold"></div>
+            </div>
+
+            <p class="max-w-xl mx-auto text-tangled-goldLight/80 text-sm md:text-base leading-relaxed font-light italic">
+                "Vejo em vocês a luz... venha compartilhar esta noite inesquecível de luzes, sonhos e comemoração!"
+            </p>
+
+            <!-- Call to Actions -->
+            <div class="pt-6 flex flex-col sm:flex-row justify-center items-center gap-4">
+                <a href="#rsvp" class="w-full sm:w-auto px-9 py-4 bg-gradient-to-r from-tangled-gold via-tangled-goldLight to-tangled-gold text-tangled-deep font-bold rounded-full shadow-[0_0_25px_rgba(243,192,107,0.5)] hover:scale-105 transition duration-300">
+                    <i class="fas fa-sparkles mr-2"></i> Confirmar Presença
+                </a>
+                <a href="#detalhes" class="w-full sm:w-auto px-9 py-4 glass-card text-tangled-goldLight font-medium rounded-full shadow-lg hover:bg-tangled-violet/40 transition duration-300 border border-tangled-gold/40">
+                    <i class="fas fa-info-circle mr-2"></i> Saber Mais
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Details Section -->
+    <section id="detalhes" class="py-20 px-4 relative z-10">
+        <div class="max-w-5xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="font-fairytale text-2xl md:text-4xl font-bold gold-gradient-text">Detalhes da Festa</h2>
+                <div class="w-24 h-0.5 bg-gradient-to-r from-transparent via-tangled-gold to-transparent mx-auto mt-3"></div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Card 1: Data e Hora -->
+                <div class="glass-card glass-card-interactive p-8 rounded-3xl text-center">
+                    <div class="w-16 h-16 bg-tangled-violet/60 text-tangled-gold rounded-2xl flex items-center justify-center mx-auto mb-6 text-2xl border border-tangled-gold/30 shadow-[0_0_15px_rgba(243,192,107,0.3)]">
+                        <i class="far fa-calendar-alt"></i>
+                    </div>
+                    <h3 class="font-fairytale text-xl font-bold text-tangled-goldLight mb-2">Data & Horário</h3>
+                    <p class="text-gray-300 text-sm mb-1">Sábado, 05 de Dezembro de 2026</p>
+                    <p class="text-tangled-gold font-semibold text-sm">A partir das 20:00h</p>
+                </div>
+
+                <!-- Card 2: Traje -->
+                <div class="glass-card glass-card-interactive p-8 rounded-3xl text-center">
+                    <div class="w-16 h-16 bg-tangled-violet/60 text-tangled-gold rounded-2xl flex items-center justify-center mx-auto mb-6 text-2xl border border-tangled-gold/30 shadow-[0_0_15px_rgba(243,192,107,0.3)]">
+                        <i class="fas fa-crown"></i>
+                    </div>
+                    <h3 class="font-fairytale text-xl font-bold text-tangled-goldLight mb-2">Traje Sugerido</h3>
+                    <p class="text-tangled-gold font-semibold text-lg">Esporte Fino</p>
+                </div>
+
+                <!-- Card 3: Presentes -->
+                <div class="glass-card glass-card-interactive p-8 rounded-3xl text-center">
+                    <div class="w-16 h-16 bg-tangled-violet/60 text-tangled-gold rounded-2xl flex items-center justify-center mx-auto mb-6 text-2xl border border-tangled-gold/30 shadow-[0_0_15px_rgba(243,192,107,0.3)]">
+                        <i class="fas fa-gift"></i>
+                    </div>
+                    <h3 class="font-fairytale text-xl font-bold text-tangled-goldLight mb-2">Guia de Tamanhos</h3>
+                    <div class="text-gray-300 text-sm space-y-1 my-2">
+                        <p><span class="text-tangled-gold font-medium">Blusa:</span> M</p>
+                        <p><span class="text-tangled-gold font-medium">Shorts / Calça:</span> 38</p>
+                        <p><span class="text-tangled-gold font-medium">Sapato / Calçado:</span> 38/39</p>
+                    </div>
+                    <p class="text-xs text-tangled-goldLight/70 italic mt-2">Sua presença é nosso maior presente!</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Location Section -->
+    <section id="local" class="py-20 px-4 relative z-10">
+        <div class="max-w-5xl mx-auto">
+            <div class="text-center mb-12">
+                <h2 class="font-fairytale text-2xl md:text-4xl font-bold gold-gradient-text">Local da Celebração</h2>
+                <div class="w-24 h-0.5 bg-gradient-to-r from-transparent via-tangled-gold to-transparent mx-auto mt-3"></div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                <div class="lg:col-span-5 space-y-4">
+                    <div class="glass-card p-7 rounded-3xl border border-tangled-gold/30">
+                        <span class="text-xs font-semibold text-tangled-gold uppercase tracking-widest">Espaço de Eventos</span>
+                        <h3 class="font-fairytale text-2xl font-bold text-tangled-goldLight mt-1">K29 Eventos</h3>
+                        <p class="text-gray-300 text-sm mt-3 leading-relaxed">
+                            <i class="fas fa-map-marker-alt text-tangled-gold mr-2"></i>
+                            Av. Homero Vasconcelos de Souza Camargo, 1196 - Jardim Ipaussurama, Campinas - SP
+                        </p>
+                        <p class="text-xs text-tangled-goldLight/70 mt-2">
+                            Estacionamento no local.
+                        </p>
+                        <div class="pt-5 flex gap-3">
+                            <a href="https://www.google.com/maps/search/?api=1&query=K29+Eventos+Campinas" target="_blank" class="flex-1 bg-gradient-to-r from-tangled-gold to-tangled-goldLight text-tangled-deep text-center py-3 rounded-xl text-xs font-bold hover:brightness-110 transition shadow-md">
+                                <i class="fas fa-directions mr-1"></i> Google Maps
+                            </a>
+                            <a href="https://waze.com/ul?q=K29%20Eventos%20Campinas" target="_blank" class="flex-1 glass-card text-tangled-goldLight text-center py-3 rounded-xl text-xs font-bold hover:bg-tangled-violet/50 transition border border-tangled-gold/40">
+                                <i class="fab fa-waze mr-1"></i> Waze
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Map Frame -->
+                <div class="lg:col-span-7 h-80 md:h-96 rounded-3xl overflow-hidden shadow-2xl border border-tangled-gold/30 relative">
+                    <iframe 
+                        title="Mapa do Local - K29 Eventos Campinas"
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3676.0123018903!2d-47.12687122380572!3d-22.91285227924843!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94c8b9006d172f8b%3A0x1c56d070f4dc9314!2sK29%20Eventos!5e0!3m2!1spt-BR!2sbr!4v1710000000000!5m2!1spt-BR!2sbr" 
+                        class="w-full h-full border-0 filter opacity-90 contrast-125" 
+                        allowfullscreen="" 
+                        loading="lazy">
+                    </iframe>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- RSVP Section -->
+    <section id="rsvp" class="py-20 px-4 relative z-10">
+        <div class="max-w-2xl mx-auto">
+            <div class="text-center mb-10">
+                <span class="uppercase tracking-widest text-xs text-tangled-gold font-bold">RSVP</span>
+                <h2 class="font-fairytale text-2xl md:text-4xl font-bold gold-gradient-text mt-1">Confirmação de Presença</h2>
+                <p class="text-tangled-goldLight/80 text-sm mt-2">Favor confirmar sua presença até 20 de Novembro de 2026</p>
+                <p class="text-xs text-tangled-gold mt-1 font-semibold">
+                    <i class="fab fa-whatsapp text-green-400 mr-1 text-sm"></i> WhatsApp: (19) 99280-6262
+                </p>
+            </div>
+
+            <div class="glass-card p-6 md:p-10 rounded-3xl shadow-2xl border border-tangled-gold/40">
+                <form id="rsvpForm" onsubmit="handleRSVP(event)" class="space-y-5">
+                    <div>
+                        <label class="block text-xs uppercase tracking-wider text-tangled-goldLight mb-2">Nome Completo *</label>
+                        <input type="text" id="rsvpName" required placeholder="Digite seu nome completo" class="w-full px-4 py-3 rounded-xl bg-tangled-deep/60 border border-tangled-gold/30 text-white placeholder-tangled-goldLight/40 focus:outline-none focus:ring-2 focus:ring-tangled-gold">
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs uppercase tracking-wider text-tangled-goldLight mb-2">Você irá comparecer? *</label>
+                            <select id="rsvpStatus" required class="w-full px-4 py-3 rounded-xl bg-tangled-deep border border-tangled-gold/30 text-white focus:outline-none focus:ring-2 focus:ring-tangled-gold">
+                                <option value="Sim, com certeza!">Sim, com certeza!</option>
+                                <option value="Infelizmente não poderei comparecer">Infelizmente não poderei</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs uppercase tracking-wider text-tangled-goldLight mb-2">Acompanhantes</label>
+                            <input type="number" id="rsvpGuests" min="0" max="5" value="0" class="w-full px-4 py-3 rounded-xl bg-tangled-deep/60 border border-tangled-gold/30 text-white focus:outline-none focus:ring-2 focus:ring-tangled-gold">
+                        </div>
+                    </div>
+
+                    <button type="submit" class="w-full py-4 bg-gradient-to-r from-tangled-gold via-tangled-goldLight to-tangled-gold text-tangled-deep font-bold text-lg rounded-xl hover:scale-[1.02] transition duration-300 shadow-[0_0_20px_rgba(243,192,107,0.4)] mt-3 flex items-center justify-center gap-2">
+                        <i class="fab fa-whatsapp text-xl"></i> Confirmar pelo WhatsApp
+                    </button>
+                </form>
+
+                <!-- Success Confirmation Message -->
+                <div id="rsvpSuccess" class="hidden text-center py-8 space-y-4">
+                    <div class="w-16 h-16 bg-tangled-gold text-tangled-deep rounded-full flex items-center justify-center mx-auto text-3xl shadow-[0_0_20px_#FFDF80]">
+                        <i class="fas fa-check"></i>
+                    </div>
+                    <h3 class="font-fairytale text-2xl font-bold gold-gradient-text">Redirecionando para o WhatsApp...</h3>
+                    <p class="text-tangled-goldLight/90 text-sm max-w-md mx-auto">Sua mensagem foi gerada! Caso o WhatsApp não abra automaticamente, clique no botão abaixo para enviar sua confirmação para o número <strong>(19) 99280-6262</strong>.</p>
+                    <a id="whatsappDirectLink" href="#" target="_blank" class="inline-block px-6 py-3 bg-green-600 hover:bg-green-500 text-white font-bold rounded-xl shadow-lg transition">
+                        <i class="fab fa-whatsapp mr-2"></i> Abrir WhatsApp
+                    </a>
+                    <br>
+                    <button onclick="resetRSVP()" class="text-xs text-tangled-gold underline hover:text-white mt-4 block mx-auto">
+                        Editar ou enviar outra resposta
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-8 bg-tangled-deep/90 text-center text-tangled-goldLight/60 border-t border-tangled-gold/20 text-xs relative z-10">
+        <p class="font-script text-3xl text-tangled-gold mb-1">Eloisa Fabri 2026</p>
+        <p>Um novo sonho começa agora.</p>
+    </footer>
+
+    <!-- Audio Background: Vejo Enfim a Luz Brilhar -->
+    <audio id="bgAudio" loop preload="auto">
+        <source src="https://ia801503.us.archive.org/15/items/vejo-enfim-a-luz-brilhar/VejoEnfimALuzBrilhar.mp3" type="audio/mpeg">
+        <source src="https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=happy-acoustic-guitar-114258.mp3" type="audio/mpeg">
+    </audio>
+
+    <script>
+        // --- Generate Dynamic Floating Lanterns Background ---
+        function createLanterns() {
+            const container = document.getElementById('lanterns-container');
+            const lanternCount = 25;
+
+            for (let i = 0; i < lanternCount; i++) {
+                const lantern = document.createElement('div');
+                lantern.className = 'lantern';
+                lantern.style.left = `${Math.random() * 100}%`;
+                lantern.style.animationDuration = `${10 + Math.random() * 12}s`;
+                lantern.style.animationDelay = `${Math.random() * 10}s`;
+                lantern.style.transform = `scale(${0.5 + Math.random() * 0.8})`;
+                container.appendChild(lantern);
+            }
+        }
+        createLanterns();
+
+        // --- RSVP Handling with WhatsApp integration ---
+        function handleRSVP(e) {
+            e.preventDefault();
+            const name = document.getElementById('rsvpName').value.trim();
+            const status = document.getElementById('rsvpStatus').value;
+            const guests = document.getElementById('rsvpGuests').value;
+            
+            // Format WhatsApp Message
+            let message = `Olá! Gostaria de confirmar presença no aniversário da Eloisa Fabri! ✨\n\n`;
+            message += `*Nome:* ${name}\n`;
+            message += `*Presença:* ${status}\n`;
+            if (guests > 0) {
+                message += `*Acompanhantes:* ${guests}\n`;
+            }
+
+            const phone = "5519992806262";
+            const whatsappUrl = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
+
+            // Trigger Confetti and Golden Lights Effect
+            if (status.includes('Sim')) {
+                confetti({
+                    particleCount: 150,
+                    spread: 80,
+                    origin: { y: 0.6 },
+                    colors: ['#F3C06B', '#FFE8A3', '#FFDF80', '#7B2068', '#FFFFFF']
+                });
+            }
+
+            document.getElementById('whatsappDirectLink').href = whatsappUrl;
+            document.getElementById('rsvpForm').classList.add('hidden');
+            document.getElementById('rsvpSuccess').classList.remove('hidden');
+
+            // Automatically open WhatsApp link
+            window.open(whatsappUrl, '_blank');
+        }
+
+        function resetRSVP() {
+            document.getElementById('rsvpForm').reset();
+            document.getElementById('rsvpForm').classList.remove('hidden');
+            document.getElementById('rsvpSuccess').classList.add('hidden');
+        }
+
+        // --- Music Player Toggle ---
+        let isPlaying = false;
+        const audio = document.getElementById('bgAudio');
+
+        function toggleAudio() {
+            const musicIcon = document.getElementById('musicIcon');
+            if (isPlaying) {
+                audio.pause();
+                musicIcon.className = "fas fa-play text-xl ml-0.5";
+            } else {
+                audio.play().then(() => {
+                    musicIcon.className = "fas fa-pause text-xl text-tangled-gold";
+                }).catch(e => {
+                    console.log("Audio playback error:", e);
+                });
+            }
+            isPlaying = !isPlaying;
+        }
+    </script>
+</body>
+</html>
