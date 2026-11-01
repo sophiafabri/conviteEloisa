@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aniversário de Eloisa</title>
+    <title>Aniversário de Eloisa Fabri - 05/12/2026</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Google Fonts: Tangled Fairytale Inspired -->
@@ -129,17 +129,6 @@
 
     <!-- Floating Lanterns Animation Background -->
     <div id="lanterns-container" class="fixed inset-0 pointer-events-none z-0 overflow-hidden"></div>
-
-    <!-- Audio Player Toggle -->
-    <div class="fixed bottom-6 right-6 z-50 flex items-center gap-3">
-        <div id="musicLabel" class="hidden sm:flex items-center gap-2 bg-tangled-deep/90 text-tangled-goldLight text-xs px-4 py-2 rounded-full border border-tangled-gold/40 shadow-xl backdrop-blur-md">
-            <i class="fas fa-music text-tangled-gold animate-bounce"></i>
-            <span>"Vejo Enfim a Luz Brilhar"</span>
-        </div>
-        <button id="musicToggle" onclick="toggleAudio()" class="w-13 h-13 p-3.5 rounded-full bg-tangled-violet text-tangled-goldLight shadow-2xl flex items-center justify-center hover:scale-110 transition-all duration-300 border border-tangled-gold/50 hover:shadow-[0_0_20px_rgba(243,192,107,0.6)]" title="Tocar / Pausar Música">
-            <i id="musicIcon" class="fas fa-play text-xl ml-0.5"></i>
-        </button>
-    </div>
 
     <!-- Navigation Header -->
     <nav class="fixed top-0 left-0 w-full z-40 bg-tangled-deep/80 backdrop-blur-md border-b border-tangled-gold/20 px-4 py-3 transition-all duration-300">
@@ -361,12 +350,6 @@
         <p>Um novo sonho começa agora.</p>
     </footer>
 
-    <!-- Audio Background: Vejo Enfim a Luz Brilhar -->
-    <audio id="bgAudio" loop preload="auto">
-        <source src="https://ia801503.us.archive.org/15/items/vejo-enfim-a-luz-brilhar/VejoEnfimALuzBrilhar.mp3" type="audio/mpeg">
-        <source src="https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=happy-acoustic-guitar-114258.mp3" type="audio/mpeg">
-    </audio>
-
     <script>
         // --- Generate Dynamic Floating Lanterns Background ---
         function createLanterns() {
@@ -425,25 +408,6 @@
             document.getElementById('rsvpForm').reset();
             document.getElementById('rsvpForm').classList.remove('hidden');
             document.getElementById('rsvpSuccess').classList.add('hidden');
-        }
-
-        // --- Music Player Toggle ---
-        let isPlaying = false;
-        const audio = document.getElementById('bgAudio');
-
-        function toggleAudio() {
-            const musicIcon = document.getElementById('musicIcon');
-            if (isPlaying) {
-                audio.pause();
-                musicIcon.className = "fas fa-play text-xl ml-0.5";
-            } else {
-                audio.play().then(() => {
-                    musicIcon.className = "fas fa-pause text-xl text-tangled-gold";
-                }).catch(e => {
-                    console.log("Audio playback error:", e);
-                });
-            }
-            isPlaying = !isPlaying;
         }
     </script>
 </body>
